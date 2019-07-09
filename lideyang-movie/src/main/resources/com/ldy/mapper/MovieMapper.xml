@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldy.mapper.MovieDao">
+	
+	<!-- 编写查询相关sql语句 -->
+	<select id="searchMovie" resultType="com.ldy.bean.Movie" parameterType="map">
+		select * from movie m,type t where m.tid=t.tid
+		<if test="mname!=null and mname!='' ">
+			and instr(m.mname,#{mname})
+		</if>
+		<if test="num%2==0 and flag==0">
+			order by m.msc asc
+		</if>
+		<if test="num%2==1 and flag==0">
+			order by m.msc desc
+		</if>
+		<if test="num%2==0 and flag==1">
+			order by m.mtime asc
+		</if>
+		<if test="num%2==1 and flag==1">
+			order by m.mtime desc
+		</if>
+		<if test="num%2==0 and flag==2">
+			order by m.myear asc
+		</if>
+		<if test="num%2==1 and flag==2">
+			order by m.myear desc
+		</if>
+	</select>
+	
+	<select id="searchMovieById" resultType="com.ldy.bean.Movie" parameterType="int">
+		select * from movie where mid=#{0}
+	</select>
+	
+	<update id="updateMtype" parameterType="int">
+		update movie set
+		mtype=0
+		where mid=#{0}
+	</update>
+	
+</mapper>
