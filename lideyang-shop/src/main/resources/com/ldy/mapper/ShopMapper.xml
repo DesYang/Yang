@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ldy.mapper.ShopDao">
+	
+	<!-- 编写查询相关sql语句 -->
+	<select id="searchShop" resultType="com.ldy.bean.Shop" parameterType="map">
+		select * from shop
+		<if test="sname!=null and sname!=''">
+			where instr(sname,#{sname})
+		</if>
+	</select>
+	
+	<select id="searchGoodsBySid" resultType="com.ldy.bean.Goods" parameterType="int">
+		select * from goods g,shop_goods sg where g.gid=sg.gid and sg.sid=#{0}
+	</select>
+	
+	<select id="searchGoods" resultType="com.ldy.bean.Goods">
+		select * from goods
+	</select>
+	
+	<insert id="addShop" parameterType="map">
+		insert into shop
+		(sname,sdate)
+		values
+		(#{sname},#{sdate})
+	</insert>
+	
+	<select id="searchSid" resultType="int" parameterType="string">
+		select sid from shop where sname=#{0}
+	</select>
+	
+	<insert id="addShop_gids" parameterType="int">
+		insert into shop_goods
+		(sid,gid)
+		values
+		(#{1},#{0})
+	</insert>
+	
+	<delete id="deleteAll" parameterType="int">
+		delete from shop
+		where sid=#{0}
+	</delete>
+	
+	<select id="searchShopById" resultType="com.ldy.bean.Shop" parameterType="int">
+		select * from shop where sid=#{0}
+	</select>
+	
+</mapper>
